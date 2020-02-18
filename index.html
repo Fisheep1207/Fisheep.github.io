@@ -249,7 +249,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-18 11:02:17" itemprop="dateModified" datetime="2020-02-18T11:02:17+08:00">2020-02-18</time>
+                <time title="Modified: 2020-02-18 11:09:58" itemprop="dateModified" datetime="2020-02-18T11:09:58+08:00">2020-02-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -339,7 +339,7 @@
 <h2 id="在-GitHub-上新增-GitHub-Pages"><a href="#在-GitHub-上新增-GitHub-Pages" class="headerlink" title="在 GitHub 上新增 GitHub Pages"></a>在 GitHub 上新增 GitHub Pages</h2><p>這裡就到了最後一步——讓大家看到你的網站！<br>我們使用<code>GitPage</code>來搭建就是因為它最容易也最好懂！</p>
 <ol>
 <li><p>首先在 Github 上面創建一個新的專案，名稱叫作</p>
-<h3 id="github-io"><a href="#github-io" class="headerlink" title=".github.io"></a><strong><username>.github.io</strong></h3><p> 例如： <strong>Fisheep1207.github.io</strong></p>
+<h3 id="username-github-io"><a href="#username-github-io" class="headerlink" title="username.github.io**"></a><code>username</code>.github.io**</h3><p> 例如： <strong>Fisheep1207.github.io</strong></p>
 <h4 id="貼心小提醒："><a href="#貼心小提醒：" class="headerlink" title="貼心小提醒："></a>貼心小提醒：</h4><ul>
 <li>這裡要記得，<code>&lt;username&gt;</code>一定要跟你 github 的 username一樣喔！不然 <code>github page</code> 會找不到你的資料在哪裡。</li>
 <li><code>github</code> 的 <strong>private</strong> 專案要錢，如果不付錢的話，就乖乖選用 <strong>public</strong> 專案喔！</li>
@@ -355,12 +355,12 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo d  <span class="comment">#hexo deploy後，輸入github帳密就會佈署好摟！</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>上傳完畢之後，就可以上</p>
-<h4 id="github-io-看到你自己的網站摟！"><a href="#github-io-看到你自己的網站摟！" class="headerlink" title=".github.io 看到你自己的網站摟！"></a><username>.github.io 看到你自己的網站摟！</h4><h4 id="貼心小提醒：-1"><a href="#貼心小提醒：-1" class="headerlink" title="貼心小提醒："></a>貼心小提醒：</h4></li>
+<h4 id="username-github-io-看到你自己的網站摟！"><a href="#username-github-io-看到你自己的網站摟！" class="headerlink" title="username.github.io 看到你自己的網站摟！"></a><code>username</code>.github.io 看到你自己的網站摟！</h4><h4 id="貼心小提醒：-1"><a href="#貼心小提醒：-1" class="headerlink" title="貼心小提醒："></a>貼心小提醒：</h4></li>
 </ol>
 <ul>
 <li><p>當你發現你的網站在本地端可以正常運作，也確定已經上傳到<code>github</code>，但是你按 <code>F5</code> 重新整理網頁時，仍然看不到變化，那有可能是你的瀏覽器紀錄了一些 <code>cache</code> ，導致你一直訪問到之前的網頁，這個時候要按 <code>Ctrl</code>+<code>F5</code>，告訴瀏覽器：<strong>「無論你有沒有記下任何東西，我要你全部重新存取！！」</strong>，這樣才會看到改變喔！！</p>
 </li>
-<li><p>你可能會上網查詢一些微幅修改<code>.css</code>，來讓介面變得更美的方式，你會發現，奇怪，明明已經 $hexo g -d$了，怎麼看不到改變，原因可能是你沒有操作 </p>
+<li><p>你可能會上網查詢一些微幅修改<code>.css</code>，來讓介面變得更美的方式，你會發現，奇怪，明明已經 <code>hexo g -d</code>了，怎麼看不到改變，原因可能是你沒有操作 </p>
   <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean <span class="comment"># 清除public資料夾以及一些隱藏文件</span></span><br><span class="line">$ hexo g -d</span><br></pre></td></tr></table></figure>
 <p>  這樣才會讓你的全部文件確實的更動，整體的頁面也才會有改變喔！但是<code>public</code>文件會被全部刪除，所以如果你有<strong>手動</strong>在裏面存圖片或是其他文件，要記得自己做了哪些更動喔！</p>
 </li>
