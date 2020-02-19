@@ -156,6 +156,117 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://fisheep1207.github.io/2020/02/19/Web-Security/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar1.jpg">
+      <meta itemprop="name" content="Fisheep">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisheep's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/19/Web-Security/" class="post-title-link" itemprop="url">Web-Security</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-02-19 15:14:44 / Modified: 15:21:54" itemprop="dateCreated datePublished" datetime="2020-02-19T15:14:44+08:00">2020-02-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Security/" itemprop="url" rel="index">
+                    <span itemprop="name">Security</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="網頁安全-Web-Security-是什麼？"><a href="#網頁安全-Web-Security-是什麼？" class="headerlink" title="網頁安全(Web-Security)是什麼？"></a>網頁安全(Web-Security)是什麼？</h2><p>泛指針對網頁、網站上的資訊安全，涵蓋程式漏洞、邏輯漏洞、資訊洩漏等。</p>
+<h3 id="XSS-Cross-Site-Scripting"><a href="#XSS-Cross-Site-Scripting" class="headerlink" title="XSS(Cross-Site-Scripting)"></a>XSS(Cross-Site-Scripting)</h3><p>XSS 可中譯為跨網站指令碼攻擊，簡單介紹，就是「攻擊者」運用一些小技巧，將 <code>Javascript</code>或<code>HTML</code>的 element 置入在別人的網站中，因為<code>HTML</code>與<code>Javascript</code>的互動十分密切，甚至可以利用 <code>Javascript</code> 來連結到外部網站，或者用「受害者」的身分來傳輸資料，這會使得本來「受害者」以為安全的網站變得十分危險。</p>
+<h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><p><img src="https://i.imgur.com/KbDxk37.png" alt=""></p>
+<p>這是網路上找的範例，網頁長這樣<br><img src="https://i.imgur.com/tjTzf7c.png" alt=""></p>
+<p>只要你打完帳號密碼(也就是那兩個框)，按<code>submit</code>後，就會將密碼轉送到一個惡意的server，也就是說，假如 attacker 發現可以插入代碼的漏洞，那麼他就可以以「 document.getElementById(‘id’).onfocusout = function() {…} 」之類的方法動態插入這個 <code>&lt;script&gt;</code>。</p>
+<p>目前 XSS 攻擊的種類大致可以分成以下幾種類型：</p>
+<ul>
+<li>Stored XSS (儲存型)</li>
+<li>Reflected XSS (反射型)</li>
+<li>DOM-Based XSS (基於 DOM 的類型)</li>
+</ul>
+<h4 id="Stored-XSS-儲存型"><a href="#Stored-XSS-儲存型" class="headerlink" title="Stored XSS (儲存型)"></a>Stored XSS (儲存型)</h4><p>會被保存在伺服器資料庫的惡意Javascript代碼稱為 Stroed XSS，常見在文章的留言板，因為留言會被存進資料庫，如果裡面有惡意 Javascript 代碼，就會被存起來。</p>
+<h4 id="Reflected-XSS-反射型"><a href="#Reflected-XSS-反射型" class="headerlink" title="Reflected XSS (反射型)"></a>Reflected XSS (反射型)</h4><p>不會被保存在伺服器，通常是藉由 <code>GET</code> 這個類型的<code>request</code>，使得代碼直接<em>嵌入</em>網頁後端，舉一個php的實例:</p>
+<p><img src="https://i.imgur.com/vDQjl44.png" alt=""></p>
+<p>網站出來會長這樣<br><img src="https://i.imgur.com/EJeSIEr.png" alt=""></p>
+<p>並且我們按下 submit 後會讓網址產生變化<br><img src="https://i.imgur.com/St322Ly.png" alt=""></p>
+<p>因此，attacker 可以在<code>name</code>中輸入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;alert(&quot;Idiot!&quot;)&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>搭拉！這個<code>test.php</code>居然多了一個看起來是開發者寫的code<br><img src="https://i.imgur.com/4hCYWU0.png" alt=""></p>
+<h4 id="DOM-Based-XSS"><a href="#DOM-Based-XSS" class="headerlink" title="DOM-Based XSS"></a>DOM-Based XSS</h4><p>DOM 全名為 Document Object Model，用以描述 HTML 文件的表示法，它讓我們可以使用 JavaScript 動態產生完整的網頁，而不必透過伺服器，點以下連結來深入了解</p>
+<p><a href="https://developer.mozilla.org/zh-TW/docs/Web/API/Document_Object_Model" target="_blank" rel="noopener">文件物件模型 (DOM)</a></p>
+<p>因此 DOM-Based XSS 就是指網頁上的 JavaScript 在執行過程中，沒有詳細檢查資料使得操作 DOM 的過程代入了惡意指令，這是屬於<strong>前端</strong>的攻擊。</p>
+<p>以下是範例：<br><img src="https://i.imgur.com/lZGTgE5.png" alt=""></p>
+<p>這段code的呈獻方式一開始會是<br><img src="https://i.imgur.com/HX5joAT.png" alt=""></p>
+<p>輸入<strong>Fisheep</strong>並按下<code>Hey Bro!</code>後，就會將 <strong>Fisheep</strong> 嵌入 <code>&lt;span&gt;</code> 元素中。<br><img src="https://i.imgur.com/EGZDJLE.png" alt=""></p>
+<p>問題來了，假如我在方框當中輸入的是<br><code>&lt;img src=&#39;https://i.imgur.com/WuTE90y.jpg&#39; /&gt;</code></p>
+<p>畫面將會變成這樣<br><img src="https://i.imgur.com/LrAOutO.png" alt=""></p>
+<p>這是非常危險的！</p>
+<p>但是 DOM-Based XSS 除非攻擊者親自到受害者電腦前輸入，否則不可能讓受害者輸入這種惡意代碼。因此通常需要搭配前兩個手法。讓內容保存在伺服器資料庫中、或是以反射型的方式製造出內容，再藉由JavaScript 動態產生有效的 DOM 物件來運行惡意代碼。</p>
+<p>最後我們來談談如何<strong>防範 XSS 攻擊</strong></p>
+<h2 id="如何防範-XSS"><a href="#如何防範-XSS" class="headerlink" title="如何防範 XSS"></a>如何防範 XSS</h2><h3 id="Stored、Reflected-類型"><a href="#Stored、Reflected-類型" class="headerlink" title="Stored、Reflected 類型"></a>Stored、Reflected 類型</h3><p>必須由後端進行防範，除了必要的 HTML 代碼，任何使用者能輸入的內容都需要受到檢查，只要出現<code>&lt;script&gt;</code>、<code>onerror=</code>及其他任何<strong>可能執行代碼的字串都要被阻擋</strong>。<br>例如以下是網路上目前的阻擋方式：<br><img src="https://i.imgur.com/vR4Hav9.png" alt=""></p>
+<h3 id="DOM-Based-XSS-類型"><a href="#DOM-Based-XSS-類型" class="headerlink" title="DOM-Based XSS 類型"></a>DOM-Based XSS 類型</h3><p>由前端進行阻擋，除了像以上兩種，將字元變成跳脫字元的方法外，最大的問題就是在 <code>innerHTML</code> 這個指令，這個也就代表插入的內容是合法的 HTML 字串，所以字串會解析成 DOM 物件。<br>應該改用 <code>innerText</code> ， 這樣會被保證作為純粹的文字</p>
+<p><img src="https://i.imgur.com/XrIqoli.png" alt=""></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference:"></a>Reference:</h2><ul>
+<li><p><a href="https://www.youtube.com/watch?v=8GwVBpTgR2c" target="_blank" rel="noopener">Liveoverflow</a></p>
+</li>
+<li><p><a href="https://forum.gamer.com.tw/Co.php?bsn=60292&sn=11267" target="_blank" rel="noopener">巴哈姆特討論版</a></p>
+</li>
+<li><p><a href="https://zh.wikipedia.org/zh-tw/跨網站指令碼" target="_blank" rel="noopener">跨網站指令碼- 維基百科，自由的百科全書 - Wikipedia</a></p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="https://fisheep1207.github.io/2020/02/17/HelloWorld/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -523,20 +634,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
