@@ -225,6 +225,111 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://fisheep1207.github.io/2020/02/22/Hexo_auto_deploy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar1.jpg">
+      <meta itemprop="name" content="Fisheep">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisheep's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/22/Hexo_auto_deploy/" class="post-title-link" itemprop="url">Hexo_auto_deploy</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-02-22 16:13:12 / Modified: 19:32:16" itemprop="dateCreated datePublished" datetime="2020-02-22T16:13:12+08:00">2020-02-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hexo/" itemprop="url" rel="index">
+                    <span itemprop="name">Hexo</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="使用-Travis-CI-自動化部署"><a href="#使用-Travis-CI-自動化部署" class="headerlink" title="使用 Travis CI 自動化部署"></a>使用 Travis CI 自動化部署</h1><h2 id="此篇未完成！！"><a href="#此篇未完成！！" class="headerlink" title="++此篇未完成！！++"></a>++<strong>此篇未完成！！</strong>++</h2><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>小弟才上傳了三篇文章，就已經覺得每次 <code>Hexo g -d</code> 後的等待以及打帳號密碼太浪費時間和體力了(懶癌末期….)，於是查詢如何讓他自動部署，發現有超多方式的！最後選擇 <code>Travis CI</code> 是因為很多網站都是使用這個，教學也很多，所以，就開始摟！</p>
+<h2 id="註冊-Travis-CI"><a href="#註冊-Travis-CI" class="headerlink" title="註冊 Travis CI"></a>註冊 Travis CI</h2><p>Travis CI 有分兩種版本：</p>
+<ul>
+<li><a href="https://travis-ci.org/" target="_blank" rel="noopener">Travis CI 免費版</a></li>
+<li><a href="https://travis-ci.com/" target="_blank" rel="noopener">Travis CI 營利版</a></li>
+</ul>
+<p>要注意的是，免費版只能使用 <strong>public repository</strong>，不能使用 <strong>private</strong> 的，因此你的網站是 <strong>private repository</strong> ，就一定要使用營利版的喔！</p>
+<p>進入 Travis CI 免費版的官方網站後，介面如下<br><img src="https://i.imgur.com/l1Rd4Nj.png" alt=""></p>
+<p>點擊右上角的 ++<strong>Sign in with GitHub</strong>++，<br>輸入你的GitHub 帳號密碼，就會到達這個頁面<br><img src="https://i.imgur.com/E5z2SyV.png" alt=""></p>
+<p>這個介面就是 <code>Travis CI</code> 官方的教學，我們就跟著他的腳步走吧！</p>
+<ol>
+<li><p>點下 <code>Activate all repositories using GitHub Apps</code><br> 會進到以下頁面 $\downarrow$<br><img src="https://i.imgur.com/dFKixvZ.png" alt=""></p>
+<p> 選擇你要的 repositories ，然後就 Activate 吧！</p>
+</li>
+<li><p>看到這個代表你成功了 $\downarrow$<br> <img src="https://i.imgur.com/5x23U2y.png" alt=""></p>
+</li>
+<li><p>點進你要的那個 repo 中，按下 Activate repository<br> <img src="https://i.imgur.com/Vkot11n.png" alt=""></p>
+</li>
+</ol>
+<ol start="4">
+<li>接下來必須取得 GitHub 的 token，否則無法自動化部屬，到你的 Github 個人頁面中，點一下右上角頭像中的 Setting 按鈕，進到這個頁面 $\downarrow$<br><img src="https://i.imgur.com/lgZrWjS.png" alt=""><br>按下左邊 <strong>Personal settings</strong> 中，最下面的 ++<strong>Develper settings</strong>++</li>
+</ol>
+<p>再按下左邊那欄中的 ++<strong>Personal access tokens</strong>++<br>    <img src="https://i.imgur.com/rq7chaX.png" alt=""></p>
+<p>最後按下 ++<strong>Generate new token</strong>++<br>    <img src="https://i.imgur.com/0dOU7Kh.png" alt=""></p>
+<p>最好寫個Note<del>免得以後不小心把這個刪掉，然後把 ++<strong>public_repo</strong>++ 打勾，就可以滑到最底下按完成摟</del></p>
+<p>最後的介面會長這樣：<br><img src="https://i.imgur.com/gcet9Rq.png" alt=""></p>
+<p><strong>要馬上把這個 token 複製下來！！因為換個畫面回來他就不見摟!!</strong></p>
+<p>接著，回到這個畫面，並按下該 repo 旁邊小小的 Settings<br><img src="https://i.imgur.com/EIbeHYN.png" alt=""></p>
+<p>然後就到 <strong>Environment Variables</strong>，把<strong>value</strong>填上token，並把 <strong>Name</strong> 取好，確保自己不會誤會！最後按下 add。<br><img src="https://i.imgur.com/Og9ttc8.png" alt=""></p>
+<p>網站的部份到這裡結束，最後就回到本機端~</p>
+<h2 id="新增-travis-配置檔案"><a href="#新增-travis-配置檔案" class="headerlink" title="新增 travis 配置檔案"></a>新增 travis 配置檔案</h2><p>新增一個檔案 <code>.travis.yml</code> 在你的 Hexo 個人網站的目錄下，然後在檔案中輸入</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 設置系統語言環境</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">node_js</span></span><br><span class="line"><span class="comment"># 是否需要 sudo 權限</span></span><br><span class="line"><span class="attr">sudo:</span> <span class="literal">false</span></span><br><span class="line"><span class="comment"># 設置node_js版本</span></span><br><span class="line"><span class="attr">node_js:</span> </span><br><span class="line">  <span class="bullet">-</span> <span class="string">'10'</span></span><br><span class="line"><span class="comment"># 設置暫存區塊</span></span><br><span class="line"><span class="attr">cache:</span></span><br><span class="line">  <span class="attr">apt:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">directories:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">node_modules</span> <span class="comment"># 不經常變動的資料夾</span></span><br><span class="line"><span class="comment"># 指定部落格分支，一般來講是 Master，這是在告知當這個分支有 commit 時候就執行部屬指令</span></span><br><span class="line"><span class="attr">branches:</span></span><br><span class="line">  <span class="attr">only:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">master</span></span><br><span class="line"><span class="comment">## 安裝 Hexo-Cli</span></span><br><span class="line"><span class="attr">before_script:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">npm</span> <span class="string">install</span> <span class="string">hexo-cli</span> <span class="string">-g</span>  <span class="comment"># 安裝 Hexo 環境</span></span><br><span class="line"><span class="comment"># 清除緩存並執行編譯</span></span><br><span class="line"><span class="attr">script:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">hexo</span> <span class="string">clean</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">hexo</span> <span class="string">generate</span></span><br><span class="line"><span class="comment">## deploy 相關設置</span></span><br><span class="line"><span class="attr">after_success:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">sed</span> <span class="string">-i''</span> <span class="string">"/^ *repo/s~github\.com~$&#123;GITHUB_TOKEN&#125;@github.com~"</span> <span class="string">_config.yml</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">hexo</span> <span class="string">deploy</span></span><br></pre></td></tr></table></figure>
+
+<p>接下來就可以將這個 Hexo 主系統 <code>git push</code> 回去自己的 <strong>Repositories</strong> 啦~</p>
+<p><strong>如果你的部落格還不是 git directory 記得照著底下的步驟做</strong></p>
+<p>然後你就可以回到 Travis CI 的 <strong>Setting</strong> 畫面，並點一下你部落格名稱 ↓</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="https://fisheep1207.github.io/2020/02/19/Web-Security/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -703,7 +808,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
