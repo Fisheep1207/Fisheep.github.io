@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"fisheep1207.github.io","root":"/","scheme":"Gemini","version":"7.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="用 Python3 偵測英文句子前言在看 “Python 駭客密碼、加密、解密…..” 這本書時看到的例子，覺得非常新奇，因此放上來做個紀錄哈哈！ 這個程式非常簡單易懂，能夠判斷你輸入的資料是否是英文句子，也就是說，假如你有一串替換密碼，你想要將它解密，由於這個密碼很長，所以必須用電腦將每個可能的key都嘗試過，但是你必須使用肉眼檢查每次更換key時的結果到底正不正確，用肉眼檢查幾萬甚至幾億筆資料">
+<meta property="og:type" content="article">
+<meta property="og:title" content="isEnglish_python">
+<meta property="og:url" content="https://fisheep1207.github.io/2020/02/24/isEnglish-python/index.html">
+<meta property="og:site_name" content="Fisheep&#39;s Blog">
+<meta property="og:description" content="用 Python3 偵測英文句子前言在看 “Python 駭客密碼、加密、解密…..” 這本書時看到的例子，覺得非常新奇，因此放上來做個紀錄哈哈！ 這個程式非常簡單易懂，能夠判斷你輸入的資料是否是英文句子，也就是說，假如你有一串替換密碼，你想要將它解密，由於這個密碼很長，所以必須用電腦將每個可能的key都嘗試過，但是你必須使用肉眼檢查每次更換key時的結果到底正不正確，用肉眼檢查幾萬甚至幾億筆資料">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://i.imgur.com/qbM8ogE.png">
+<meta property="article:published_time" content="2020-02-24T12:50:43.000Z">
+<meta property="article:modified_time" content="2020-02-24T13:29:54.253Z">
+<meta property="article:author" content="Fisheep">
+<meta property="article:tag" content="python3">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/qbM8ogE.png">
+
+<link rel="canonical" href="https://fisheep1207.github.io/2020/02/24/isEnglish-python/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>isEnglish_python | Fisheep's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Fisheep's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-right"></div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="https://fisheep1207.github.io/2020/02/24/isEnglish-python/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar1.jpg">
+      <meta itemprop="name" content="Fisheep">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisheep's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          isEnglish_python
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-02-24 20:50:43 / Modified: 21:29:54" itemprop="dateCreated datePublished" datetime="2020-02-24T20:50:43+08:00">2020-02-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python3/" itemprop="url" rel="index">
+                    <span itemprop="name">python3</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="用-Python3-偵測英文句子"><a href="#用-Python3-偵測英文句子" class="headerlink" title="用 Python3 偵測英文句子"></a>用 Python3 偵測英文句子</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在看 <strong>“Python 駭客密碼、加密、解密…..”</strong> 這本書時看到的例子，覺得非常新奇，因此放上來做個紀錄哈哈！</p>
+<p>這個程式非常簡單易懂，能夠判斷你輸入的資料是否是英文句子，也就是說，假如你有一串<a href="https://zh.wikipedia.org/wiki/替换式密码" target="_blank" rel="noopener">替換密碼</a>，你想要將它解密，由於這個密碼很長，所以必須用電腦將每個可能的<code>key</code>都嘗試過，但是你必須使用肉眼檢查<strong>每次更換key時</strong>的結果到底正不正確，用肉眼檢查幾萬甚至幾億筆資料……這簡直是要人命吧！</p>
+<p>不如，嘗試使用下面這個code，來檢查檔案是否為<strong>英文</strong>吧</p>
+<h2 id="Source-Code"><a href="#Source-Code" class="headerlink" title="Source Code"></a>Source Code</h2><p>在使用以下code前，必須在同一個目錄下有這個 <a href="/2020/02/24/isEnglish-python/dictionary.txt">dictionary.txt</a>，這個檔案裡有著幾乎所有英文單字，因為有這本字典，所以我們只要用<code>python</code>進行簡單的字串比對，也就是直觀的利用<code>.split()</code>將每個詞分隔出來，並檢查這個單詞是否存在於英文字典中，如果超過<code>20%</code>以上的單字都出現在字典中，就代表這個文件是英文！</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># detectEnglish.py</span></span><br><span class="line">UPPERLETTERS = <span class="string">'ABCDEFGHIJKLMNOPQRSTUVWXYZ'</span></span><br><span class="line">LETTERS_AND_SPACE = UPPERLETTERS + UPPERLETTERS.lower() + <span class="string">' \t\n'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">loadDictionary</span><span class="params">()</span>:</span></span><br><span class="line">    dictionaryFile = open(<span class="string">'dictionary.txt'</span>)</span><br><span class="line">    englishWords = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> dictionaryFile.read().split(<span class="string">'\n'</span>):</span><br><span class="line">        englishWords[word] = <span class="literal">None</span></span><br><span class="line">    dictionaryFile.close()</span><br><span class="line">    <span class="keyword">return</span> englishWords</span><br><span class="line"></span><br><span class="line">ENGLISH_WORDS = loadDictionary()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getEnglishCount</span><span class="params">(message)</span>:</span></span><br><span class="line">    message = message.upper()</span><br><span class="line">    message = removeNonLetters(message)</span><br><span class="line">    possibleWords = message.split()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> possibleWords == []:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0.0</span> <span class="comment"># No words at all, so return 0.0.</span></span><br><span class="line"></span><br><span class="line">    matches = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> possibleWords:</span><br><span class="line">        <span class="keyword">if</span> word <span class="keyword">in</span> ENGLISH_WORDS:</span><br><span class="line">            matches += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> float(matches) / len(possibleWords)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">removeNonLetters</span><span class="params">(message)</span>:</span></span><br><span class="line">    lettersOnly = []</span><br><span class="line">    <span class="keyword">for</span> symbol <span class="keyword">in</span> message:</span><br><span class="line">        <span class="keyword">if</span> symbol <span class="keyword">in</span> LETTERS_AND_SPACE:</span><br><span class="line">            lettersOnly.append(symbol)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>.join(lettersOnly)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">isEnglish</span><span class="params">(message, wordPercentage=<span class="number">20</span>, letterPercentage=<span class="number">85</span>)</span>:</span></span><br><span class="line">    <span class="comment"># By default, 20% of the words must exist in the dictionary file, and</span></span><br><span class="line">    <span class="comment"># 85% of all the characters in the message must be letters or spaces</span></span><br><span class="line">    <span class="comment"># (not punctuation or numbers).</span></span><br><span class="line">    wordsMatch = getEnglishCount(message) * <span class="number">100</span> &gt;= wordPercentage</span><br><span class="line">    numLetters = len(removeNonLetters(message))</span><br><span class="line">    messageLettersPercentage = float(numLetters) / len(message) * <span class="number">100</span></span><br><span class="line">    lettersMatch = messageLettersPercentage &gt;= letterPercentage</span><br><span class="line">    <span class="keyword">return</span> wordsMatch <span class="keyword">and</span> lettersMatch</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><p>先將<code>dictionary.txt</code>、<code>detectEnglish.py</code>放在同一個目錄下，然後在此我以<code>python shell</code>示範給大家看</p>
+<p><img src="https://i.imgur.com/qbM8ogE.png" alt=""></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/python3/" rel="tag"># python3</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/22/Hexo_auto_deploy/" rel="prev" title="Hexo_auto_deploy">
+      <i class="fa fa-chevron-left"></i> Hexo_auto_deploy
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#用-Python3-偵測英文句子"><span class="nav-number">1.</span> <span class="nav-text">用 Python3 偵測英文句子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Source-Code"><span class="nav-number">2.</span> <span class="nav-text">Source Code</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用方法"><span class="nav-number">2.1.</span> <span class="nav-text">使用方法</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Fisheep"
+      src="/images/avatar1.jpg">
+  <p class="site-author-name" itemprop="name">Fisheep</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Fisheep</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

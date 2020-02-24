@@ -156,6 +156,83 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://fisheep1207.github.io/2020/02/24/isEnglish-python/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar1.jpg">
+      <meta itemprop="name" content="Fisheep">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Fisheep's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/24/isEnglish-python/" class="post-title-link" itemprop="url">isEnglish_python</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-02-24 20:50:43 / Modified: 21:29:54" itemprop="dateCreated datePublished" datetime="2020-02-24T20:50:43+08:00">2020-02-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python3/" itemprop="url" rel="index">
+                    <span itemprop="name">python3</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="用-Python3-偵測英文句子"><a href="#用-Python3-偵測英文句子" class="headerlink" title="用 Python3 偵測英文句子"></a>用 Python3 偵測英文句子</h2><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>在看 <strong>“Python 駭客密碼、加密、解密…..”</strong> 這本書時看到的例子，覺得非常新奇，因此放上來做個紀錄哈哈！</p>
+<p>這個程式非常簡單易懂，能夠判斷你輸入的資料是否是英文句子，也就是說，假如你有一串<a href="https://zh.wikipedia.org/wiki/替换式密码" target="_blank" rel="noopener">替換密碼</a>，你想要將它解密，由於這個密碼很長，所以必須用電腦將每個可能的<code>key</code>都嘗試過，但是你必須使用肉眼檢查<strong>每次更換key時</strong>的結果到底正不正確，用肉眼檢查幾萬甚至幾億筆資料……這簡直是要人命吧！</p>
+<p>不如，嘗試使用下面這個code，來檢查檔案是否為<strong>英文</strong>吧</p>
+<h2 id="Source-Code"><a href="#Source-Code" class="headerlink" title="Source Code"></a>Source Code</h2><p>在使用以下code前，必須在同一個目錄下有這個 <a href="/2020/02/24/isEnglish-python/dictionary.txt">dictionary.txt</a>，這個檔案裡有著幾乎所有英文單字，因為有這本字典，所以我們只要用<code>python</code>進行簡單的字串比對，也就是直觀的利用<code>.split()</code>將每個詞分隔出來，並檢查這個單詞是否存在於英文字典中，如果超過<code>20%</code>以上的單字都出現在字典中，就代表這個文件是英文！</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># detectEnglish.py</span></span><br><span class="line">UPPERLETTERS = <span class="string">'ABCDEFGHIJKLMNOPQRSTUVWXYZ'</span></span><br><span class="line">LETTERS_AND_SPACE = UPPERLETTERS + UPPERLETTERS.lower() + <span class="string">' \t\n'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">loadDictionary</span><span class="params">()</span>:</span></span><br><span class="line">    dictionaryFile = open(<span class="string">'dictionary.txt'</span>)</span><br><span class="line">    englishWords = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> dictionaryFile.read().split(<span class="string">'\n'</span>):</span><br><span class="line">        englishWords[word] = <span class="literal">None</span></span><br><span class="line">    dictionaryFile.close()</span><br><span class="line">    <span class="keyword">return</span> englishWords</span><br><span class="line"></span><br><span class="line">ENGLISH_WORDS = loadDictionary()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getEnglishCount</span><span class="params">(message)</span>:</span></span><br><span class="line">    message = message.upper()</span><br><span class="line">    message = removeNonLetters(message)</span><br><span class="line">    possibleWords = message.split()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> possibleWords == []:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0.0</span> <span class="comment"># No words at all, so return 0.0.</span></span><br><span class="line"></span><br><span class="line">    matches = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> word <span class="keyword">in</span> possibleWords:</span><br><span class="line">        <span class="keyword">if</span> word <span class="keyword">in</span> ENGLISH_WORDS:</span><br><span class="line">            matches += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> float(matches) / len(possibleWords)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">removeNonLetters</span><span class="params">(message)</span>:</span></span><br><span class="line">    lettersOnly = []</span><br><span class="line">    <span class="keyword">for</span> symbol <span class="keyword">in</span> message:</span><br><span class="line">        <span class="keyword">if</span> symbol <span class="keyword">in</span> LETTERS_AND_SPACE:</span><br><span class="line">            lettersOnly.append(symbol)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">''</span>.join(lettersOnly)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">isEnglish</span><span class="params">(message, wordPercentage=<span class="number">20</span>, letterPercentage=<span class="number">85</span>)</span>:</span></span><br><span class="line">    <span class="comment"># By default, 20% of the words must exist in the dictionary file, and</span></span><br><span class="line">    <span class="comment"># 85% of all the characters in the message must be letters or spaces</span></span><br><span class="line">    <span class="comment"># (not punctuation or numbers).</span></span><br><span class="line">    wordsMatch = getEnglishCount(message) * <span class="number">100</span> &gt;= wordPercentage</span><br><span class="line">    numLetters = len(removeNonLetters(message))</span><br><span class="line">    messageLettersPercentage = float(numLetters) / len(message) * <span class="number">100</span></span><br><span class="line">    lettersMatch = messageLettersPercentage &gt;= letterPercentage</span><br><span class="line">    <span class="keyword">return</span> wordsMatch <span class="keyword">and</span> lettersMatch</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h3><p>先將<code>dictionary.txt</code>、<code>detectEnglish.py</code>放在同一個目錄下，然後在此我以<code>python shell</code>示範給大家看</p>
+<p><img src="https://i.imgur.com/qbM8ogE.png" alt=""></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="https://fisheep1207.github.io/2020/02/22/Hexo_auto_deploy/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -181,7 +258,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-02-22 16:13:12 / Modified: 19:35:05" itemprop="dateCreated datePublished" datetime="2020-02-22T16:13:12+08:00">2020-02-22</time>
+              <time title="Created: 2020-02-22 16:13:12 / Modified: 19:43:10" itemprop="dateCreated datePublished" datetime="2020-02-22T16:13:12+08:00">2020-02-22</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -217,7 +294,7 @@
 <p>點擊右上角的 ++<strong>Sign in with GitHub</strong>++，<br>輸入你的GitHub 帳號密碼，就會到達這個頁面<br><img src="https://i.imgur.com/E5z2SyV.png" alt=""></p>
 <p>這個介面就是 <code>Travis CI</code> 官方的教學，我們就跟著他的腳步走吧！</p>
 <ol>
-<li><p>點下 <code>Activate all repositories using GitHub Apps</code><br> 會進到以下頁面 $\downarrow$<br><img src="https://i.imgur.com/dFKixvZ.png" alt=""></p>
+<li><p>點下 <code>Activate all repositories using GitHub Apps</code><br> 會進到以下頁面  $\downarrow$<br><img src="https://i.imgur.com/dFKixvZ.png" alt=""></p>
 <p> 選擇你要的 repositories ，然後就 Activate 吧！</p>
 </li>
 <li><p>看到這個代表你成功了 $\downarrow$<br> <img src="https://i.imgur.com/5x23U2y.png" alt=""></p>
@@ -242,6 +319,7 @@
 <p>接下來就可以將這個 Hexo 主系統 <code>git push</code> 回去自己的 <strong>Repositories</strong> 啦~</p>
 <p><strong>如果你的部落格還不是 git directory 記得照著底下的步驟做</strong></p>
 <p>然後你就可以回到 Travis CI 的 <strong>Setting</strong> 畫面，並點一下你部落格名稱 ↓</p>
+<p>​    </p>
 
       
     </div>
@@ -739,20 +817,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
